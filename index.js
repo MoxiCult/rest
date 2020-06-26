@@ -1,7 +1,12 @@
 const express = require('express')
 const app = express()
 const port = 3000
+const path = require('path');
 
+const bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({ extended: true }));
+
+// Database
 const students = {
                   '0001':'Jacob Searles',
                   '0002': 'Karl Armstrong',
@@ -25,6 +30,7 @@ const grades ={
 let tableStartHtml = '<table><tr><th>ID</th><th>Name</th></tr>'
 let tableCloseHtml = '</table>'
 
+//Views
 function buildStudentList(){
   let html= tableStartHtml
    Object.keys(students).forEach( (key,index)=>{
@@ -96,7 +102,20 @@ function getStudentNameById(id){
    return name;
 }
 
-// REST API
+function addGradeByStudentId(id, assignment, grade){
+  newgrade = {assignment:grade}
+  Object.keys(students).forEach( (key,index)=>{
+    if(key===id){
+      let gradeList = students[key]
+      gradeList.append(newgrade)
+    }
+  })
+}
+
+
+// *********************************
+// *  REST API
+// ********************************
 
 app.get('/students', (req, res) => {
 
@@ -117,8 +136,16 @@ app.get('/grades/:studentId', (req,res)=>{
   res.send(getStudentGradesById(req.params.studentId));
 })
 
-app.get('/gradeform/', (req,res)=>{
-  res.send()
+app.get('/gradeform', (req,res)=>{
+  res.sendFile( path.join(__dirname + '/gradeform.html'))
+})
+
+app.post('/gradeform', (req,res)=>{
+  let studentId = req.body['studentId'];
+  let assignment = req.body['assignment'];
+  let grade = req.body['grade']
+  addGradeByStudentId(studentId,assignment,grade);
+  res.redirect(req.get('referer'));
 })
 
 app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`))

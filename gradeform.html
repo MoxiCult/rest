@@ -2,21 +2,19 @@
 <html>
 
 <head>
-  <meta charset="utf-8">
   <title>Grade Form</title>
-  <meta name="author" content="">
-  <meta name="description" content="">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+
 </head>
 
 <body>
-  <form method=POST>
+  <form method='post' action='/gradeform' novalidate>
     <label for="fname">Student ID:</label><br>
     <input type="text" id="stuentId" name="studentId"><br>
     <label for="assignment">Assignment:</label><br>
-    <input type="text" id="assignment" name="assignment">
+    <input type="text" id="assignment" name="assignment"><br>
     <label for="grade">Grade:</label><br>
     <input type="text" id="grade" name="grade">
+    <button type="submit">Submit</button>
   </form>
 
 </body>
