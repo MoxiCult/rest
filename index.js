@@ -103,11 +103,12 @@ function getStudentNameById(id){
 }
 
 function addGradeByStudentId(id, assignment, grade){
-  newgrade = {assignment:grade}
+  newgrade = {}
+  newgrade[assignment] = grade
   Object.keys(students).forEach( (key,index)=>{
     if(key===id){
-      let gradeList = students[key]
-      gradeList.append(newgrade)
+      let gradeList = grades[key]
+      gradeList.push(newgrade)
     }
   })
 }
